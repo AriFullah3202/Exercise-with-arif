@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/UserContext';
 import useTitle from '../../hooks/useTitle';
 
@@ -10,6 +10,9 @@ const Register = () => {
     const { createUser, updateUserProfile } = useContext(AuthContext);
     const [error, setError] = useState("")
     useTitle('Register')
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state ?.from ?.pathname || '/';
 
     const handleSubmit = (event) => {
         event.preventDefault();//it will not reload
@@ -27,6 +30,7 @@ const Register = () => {
                 form.reset();
                 handleUpdateUserProfile(name, photoUrl);
                 console.log("saved successful")
+                navigate(from);
             })
             .catch(err => {
                 console.error(err);
